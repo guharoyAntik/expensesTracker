@@ -27,11 +27,11 @@ class TransactionList extends StatelessWidget {
                     border: Border.all(color: Colors.teal),
                   ),
                   child: Text(
-                    '₹: ${transactions[idx].amount}',
+                    '₹: ${transactions[idx].amount.toStringAsFixed(2)}',
                     style: TextStyle(
                       fontWeight: FontWeight.bold,
                       fontSize: 18,
-                      color: Colors.teal,
+                      color: Theme.of(context).primaryColor,
                     ),
                   ),
                 ),
@@ -40,10 +40,7 @@ class TransactionList extends StatelessWidget {
                   children: [
                     Text(
                       transactions[idx].title,
-                      style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 16,
-                      ),
+                      style: Theme.of(context).textTheme.headline6,
                     ),
                     Text(
                       DateFormat.yMMMd().format(transactions[idx].date),
