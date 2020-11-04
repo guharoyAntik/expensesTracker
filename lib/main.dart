@@ -5,7 +5,37 @@ import './widgets/transaction_list.dart';
 import './models/transaction.dart';
 
 void main() {
-  runApp(HomePage());
+  runApp(MyApp());
+}
+
+class MyApp extends StatelessWidget {
+  @override
+  Widget build(BuildContext context) {
+    return MaterialApp(
+      title: 'Expenses Tracker',
+      home: HomePage(),
+      theme: ThemeData(
+        primarySwatch: Colors.indigo,
+        accentColor: Colors.indigoAccent,
+        fontFamily: 'Quicksand',
+        textTheme: TextTheme(
+          headline6: TextStyle(
+            fontFamily: 'OpenSans',
+            fontSize: 16,
+            fontWeight: FontWeight.bold,
+          ),
+        ),
+        appBarTheme: AppBarTheme(
+          textTheme: TextTheme(
+            headline6: TextStyle(
+              fontFamily: 'OpenSans',
+              fontSize: 20,
+            ),
+          ),
+        ),
+      ),
+    );
+  }
 }
 
 class HomePage extends StatefulWidget {
@@ -45,70 +75,49 @@ class _HomePageState extends State<HomePage> {
     showModalBottomSheet(
       context: ctx,
       builder: (_) {
-        return GestureDetector(
-          onTap: () {},
-          child: NewTransaction(_addTransaction),
-          behavior: HitTestBehavior.opaque,
-        );
+        return NewTransaction(_addTransaction);
+        // return GestureDetector(
+        //   onTap: () {},
+        //   child: NewTransaction(_addTransaction),
+        //   behavior: HitTestBehavior.opaque,
+        // );
       },
     );
   }
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primarySwatch: Colors.indigo,
-        accentColor: Colors.indigoAccent,
-        fontFamily: 'Quicksand',
-        textTheme: TextTheme(
-          headline6: TextStyle(
-            fontFamily: 'OpenSans',
-            fontSize: 16,
-            fontWeight: FontWeight.bold,
+    return Scaffold(
+      backgroundColor: Colors.grey[200],
+      appBar: AppBar(
+        title: Text('Expenses Tracker'),
+        centerTitle: true,
+        actions: [
+          IconButton(
+            icon: Icon(Icons.add),
+            onPressed: () => _startAddTransaction(context),
           ),
-        ),
-        appBarTheme: AppBarTheme(
-          textTheme: TextTheme(
-            headline6: TextStyle(
-              fontFamily: 'OpenSans',
-              fontSize: 20,
-            ),
-          ),
-        ),
+        ],
       ),
-      home: Scaffold(
-        backgroundColor: Colors.grey[200],
-        appBar: AppBar(
-          title: Text('Expenses Tracker'),
-          centerTitle: true,
-          actions: [
-            IconButton(
-              icon: Icon(Icons.add),
-              onPressed: () => _startAddTransaction(context),
+      body: SingleChildScrollView(
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.stretch,
+          children: [
+            Container(
+              width: double.infinity,
+              child: Card(
+                elevation: 5,
+                child: Text('Charts'),
+              ),
             ),
+            TransactionList(_transactions),
           ],
         ),
-        body: SingleChildScrollView(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.stretch,
-            children: [
-              Container(
-                width: double.infinity,
-                child: Card(
-                  elevation: 5,
-                  child: Text('Charts'),
-                ),
-              ),
-              TransactionList(_transactions),
-            ],
-          ),
-        ),
-        floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
-        floatingActionButton: FloatingActionButton(
-          child: Container(child: Icon(Icons.add)),
-          onPressed: () => _startAddTransaction(context),
-        ),
+      ),
+      floatingActionButtonLocation: FloatingActionButtonLocation.centerDocked,
+      floatingActionButton: FloatingActionButton(
+        child: Icon(Icons.add),
+        onPressed: () => _startAddTransaction(context),
       ),
     );
   }
