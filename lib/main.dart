@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 
 import './widgets/new_transcation.dart';
 import './widgets/transaction_list.dart';
+import './widgets/charts.dart';
 import './models/transaction.dart';
 
 void main() {
@@ -44,20 +45,26 @@ class HomePage extends StatefulWidget {
 }
 
 class _HomePageState extends State<HomePage> {
-  final List<Transaction> _transactions = [
-    Transaction(
-      id: 't1',
-      title: 'Milk',
-      amount: 60,
-      date: DateTime.now(),
-    ),
-    Transaction(
-      id: 't2',
-      title: 'Biscuits',
-      amount: 30,
-      date: DateTime.now(),
-    ),
+  final List<Transaction> _userTransactions = [
+    // Transaction(
+    //   id: 't1',
+    //   title: 'Milk',
+    //   amount: 60,
+    //   date: DateTime.now(),
+    // ),
+    // Transaction(
+    //   id: 't2',
+    //   title: 'Biscuits',
+    //   amount: 30,
+    //   date: DateTime.now(),
+    // ),
   ];
+
+  List<Transaction> get _recentTransactions {
+    return _userTransactions.where((element) {
+      return element.date.isAfter(DateTime.now().subtract(Duration(days: 7)));
+    }).toList();
+  }
 
   void _addTransaction(String title, double amount) {
     final newTx = Transaction(
@@ -67,7 +74,7 @@ class _HomePageState extends State<HomePage> {
         date: DateTime.now());
 
     setState(() {
-      _transactions.add(newTx);
+      _userTransactions.add(newTx);
     });
   }
 
@@ -103,14 +110,8 @@ class _HomePageState extends State<HomePage> {
         child: Column(
           crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            Container(
-              width: double.infinity,
-              child: Card(
-                elevation: 5,
-                child: Text('Charts'),
-              ),
-            ),
-            TransactionList(_transactions),
+            Chart(_recentTransactions),
+            TransactionList(_userTransactions),
           ],
         ),
       ),
